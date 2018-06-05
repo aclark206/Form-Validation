@@ -12,6 +12,7 @@ const paypal = document.querySelector("#paypal");
 const bitcoin = document.querySelector("#bitcoin");
 const payment = document.querySelector("#payment");
 const ccNum = document.querySelector("#cc-num");
+const ccNumError = document.querySelector("#cc-num-error");
 const zip = document.querySelector("#zip");
 const cvv = document.querySelector("#cvv");
 const register = document.querySelector("button");
@@ -41,8 +42,15 @@ title.addEventListener("change", (e) => {
 // T shirt Theme Listener
 // When a Theme is selected, only show the Color options available for that theme
 design.addEventListener("change", (e) => {
+	
+	// display the color select menu
+	color.style.display = "block";
+	color.previousElementSibling.style.display = "block";
+	
+	// reset the chosen color when theme is changed.
+	color.value = '';  
+	
 	let colors = color.options;
-	color.value = '';  // reset the chosen color when theme is changed.
 	if (e.target.value == "js puns") {
 		
 		// display colors available for js puns 
@@ -198,7 +206,8 @@ register.addEventListener("click", (e) => {
 	}
 
 	// valid email format
-	let regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+	let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	
 	if (regex.test(email.value)){
 		 email.style.border = "2px solid #c1deeb";
 	 }
@@ -227,18 +236,35 @@ register.addEventListener("click", (e) => {
 		//reset red border around payment drop down
 		payment.style.border = "none"
 		
-		// cc field should have 13-16 digits
+		// Regular Expressions used for making sure data is entered in the correct format
 		let ccRegEx = /^[1-9][0-9]{12,15}$/;
-		if (ccRegEx.test(ccNum.value)){
+		let zipRegEx = /^[1-9][0-9]{4}$/;
+		let cvvRegEx = /^[0-9]{3}$/;
+		
+		// cc field cannot be blank
+		if (ccNum.value.length == 0){
+			errors++;
+			ccNum.style.border = "2px solid red";
+			ccNumError.style.display = "block";
+			ccNumError.style.fontSize = ".75em";
+			ccNumError.style.color = "firebrick";
+			ccNumError.textContent = "Please enter a credit card number."
+		}
+		// cc field should have 13-16 digits	
+		else if (ccRegEx.test(ccNum.value)){
 			ccNum.style.border = "2px solid #c1deeb";
+			ccNumError.style.display = "none";
 		}
 		else{
 			errors++;
 			ccNum.style.border = "2px solid red";
+			ccNumError.style.display = "block";
+			ccNumError.style.fontSize = ".75em";
+			ccNumError.style.color = "firebrick";
+			ccNumError.textContent = "Credit Card number should have between 13 and 16 digits."
 		}
 		
-		// zip code should be a 5 digit number
-		let zipRegEx = /^[1-9][0-9]{4}$/;
+		// zip code should be a 5 digit number	
 		if (zipRegEx.test(zip.value)){
 			zip.style.border = "2px solid #c1deeb";
 		}
@@ -248,7 +274,6 @@ register.addEventListener("click", (e) => {
 		}
 		
 		// CVV should  be exactly 3 digits
-		let cvvRegEx = /^[0-9]{3}$/;
 		if (cvvRegEx.test(cvv.value)){
 			cvv.style.border = "2px solid #c1deeb";
 		}
@@ -266,14 +291,32 @@ register.addEventListener("click", (e) => {
 		//reset red border around payment drop down
 		payment.style.border = "none"
 	}
-		
-	
 
 	// if there are errors, print a message to the page
 	(errors > 0)? errorMsg.style.display = "block" : errorMsg.style.display = "none";
 }); // end register button listener/form validation
 
-// main 
+
+
+// real-time email format verification
+email.addEventListener("keypress", (e) => {
+
+	let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	
+	if (regex.test(email.value)){
+		 email.style.border = "2px solid #c1deeb";
+	 }
+	 else {
+		email.style.border = "2px solid red";
+
+	 }
+	
+});// end email event listener
+
+
+
+
+// On loading the page
 document.addEventListener("DOMContentLoaded", (e) => {
 	// put focus on the Name element
 	name.focus();
@@ -293,19 +336,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	
 	// Credit card fields and payment explanations
 	cc.style.display = "none";
+	ccNumError.style.display = "none";
 	paypal.style.display = "none";
 	bitcoin.style.display = "none";
 	
-	// error Msg if form not filled completely
+	// hide error Msg for if form not filled completely
 	errorMsg.textContent = "*** Please complete the red fields in order to register. ***";
 	errorMsg.style.color = "firebrick";
 	errorMsg.style.backgroundColor = "#c1deeb";
 	errorMsg.style.textAlign = "center";
 	errorMsg.style.display = "none";
 	form.insertBefore(errorMsg, register);
+	
+	// Hide Color label and select menu
+	color.style.display = "none";
+	color.previousElementSibling.style.display = "none";
 
-	
-	
-	
 }); // end document loaded event listener
 
