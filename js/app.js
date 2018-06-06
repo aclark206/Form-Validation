@@ -76,10 +76,14 @@ design.addEventListener("change", (e) => {
 		}
 	}
 	else{
+		color.style.display = "none";
+		color.previousElementSibling.style.display = "none";
+		/*
 		// display all
 		for (let i = 0; i < colors.length; i++){
 			colors[i].style.display = "block";
 		}
+		*/
 
 	}
 });
@@ -222,6 +226,7 @@ register.addEventListener("click", (e) => {
 	 if ( checked.length < 1) {
 		errors++;
 		activities.style.border = "2px solid red";
+		activities.style.padding = "10px";
 	 }
 	 else {
 		 activities.style.border = "none";
@@ -245,6 +250,7 @@ register.addEventListener("click", (e) => {
 		if (ccNum.value.length == 0){
 			errors++;
 			ccNum.style.border = "2px solid red";
+			ccNum.style.marginBottom = 0;
 			ccNumError.style.display = "block";
 			ccNumError.style.fontSize = ".75em";
 			ccNumError.style.color = "firebrick";
@@ -258,6 +264,7 @@ register.addEventListener("click", (e) => {
 		else{
 			errors++;
 			ccNum.style.border = "2px solid red";
+			ccNum.style.marginBottom = 0;
 			ccNumError.style.display = "block";
 			ccNumError.style.fontSize = ".75em";
 			ccNumError.style.color = "firebrick";
