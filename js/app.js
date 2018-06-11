@@ -300,13 +300,35 @@ register.addEventListener("click", (e) => {
 	}
 
 	// if there are errors, print a message to the page
-	(errors > 0)? errorMsg.style.display = "block" : errorMsg.style.display = "none";
+	if (errors > 0){
+		errorMsg.style.display = "block";
+		e.preventDefault();
+	}
+	else 
+		errorMsg.style.display = "none";
+	
+	
 }); // end register button listener/form validation
 
 
 
 // real-time email format verification
 email.addEventListener("keypress", (e) => {
+
+	let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	
+	if (regex.test(email.value)){
+		 email.style.border = "2px solid #c1deeb";
+	 }
+	 else {
+		email.style.border = "2px solid red";
+
+	 }
+	
+});// end email event listener
+
+// real-time email format verification
+email.addEventListener("change", (e) => {
 
 	let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 	
@@ -342,10 +364,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	activities.appendChild(total);
 	
 	// Credit card fields and payment explanations
-	cc.style.display = "none";
-	ccNumError.style.display = "none";
+	//diasble paypal and bitcoin
 	paypal.style.display = "none";
 	bitcoin.style.display = "none";
+		
+	//enable credit card div
+	payment.value = "credit card";
+	cc.style.display = "block";
+	ccNumError.style.display = "none";
 	
 	// hide error Msg for if form not filled completely
 	errorMsg.textContent = "*** Please complete the red fields in order to register. ***";
