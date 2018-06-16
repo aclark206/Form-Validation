@@ -195,7 +195,7 @@ payment.addEventListener("change", (e) => {
 
 // Button listener and form validation
 register.addEventListener("click", (e) => { 
-	e.preventDefault();
+
 	let errors = 0;
 	
 	/* - - - - Form Validation - - - - - - -*/
@@ -328,6 +328,7 @@ email.addEventListener("keypress", (e) => {
 });// end email event listener
 
 // real-time email format verification
+// this listener handles autocompleted entries
 email.addEventListener("change", (e) => {
 
 	let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
